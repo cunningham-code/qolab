@@ -46,13 +46,59 @@
         height: 100%;
       }
     </style>
+
+    {% if user.is_authenticated %}
+    <div id="nav-bar">
+        <a href="#"><img style="height: 50px" src="{% static 'qolab-white.png' %}" alt="Main Image"></a>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Code" aria-label="Code">
+          <button class="btn btn-white my-2 my-sm-0" type="submit">Join</button>
+        </form>
+    </div>
+    {% endif %}
     <div class="container" id="app" style="display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+      {% if not user.is_authenticated %}
       <div style="padding-top: 100px; text-align: center;">
-        <img width="80%; max-width: 300px;" src="{% static 'qolab-wordmark.png' %}" alt="Main Image">
+        <img style="width: 80%; max-width: 500px;" src="{% static 'qolab-wordmark.png' %}" alt="Main Image">
       </div>
+      {% endif %}
       {% if user.is_authenticated %}
-      <p>Welcome, {{ user.first_name }} {{user.last_name }} !</p>
-      <p>Welcome, {{ user.email }} </p>
+      <div>
+        <p>Welcome, {{ user.first_name }} {{user.last_name }} !</p>
+        <p>Welcome, {{ user.email }} </p>
+        <div class="container">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Code</label>
+              <input type="text" class="form-control" id="inputcode4" />
+              <button type="submit" class="btncls btn-success">Go</button>
+            </div>
+          </div>
+        
+          <div class="container">
+            <div class="form-row">
+              <label for="inputEmail4">Email</label>
+              <input type="email" class="form-control" id="inputEmail4" placeholder="email1@example, email2@example, ..." />
+            </div>
+          </div>
+        
+          <div class="container">
+            <input type="text" class="form-control" id="datepicker" style="width: 300px" />
+            <br />
+            <input type="text" class="form-control" data-provide="datepicker" style="width: 300px" />
+          </div>
+          <div class="from-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Start</label>
+              <input type="time" class="form-control" id="inputStart4" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">End</label>
+              <input type="time" class="form-control" id="inputEnd4" />
+            </div>
+          </div>
+        </div>
+      </div>
       
       {% else %}
       <div style="display: flex; flex-direction: column; align-items: center; ">

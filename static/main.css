@@ -49,3 +49,21 @@ Flow Screen
   margin: 30px;
   width: 90%;
 }
+
+#nav-bar {
+  background-color: #f46036;
+  display: flex;
+  padding: 10px 40px;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+  #nav-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #nav-bar form {
+    padding-top: 30px;
+  }
+}
