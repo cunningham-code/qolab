@@ -24,7 +24,7 @@
     <!-- Add additional CSS in static file -->
   </head>
 
-  <body>
+  <body style="background-color: #FCF8ED">
     <!--
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -40,16 +40,31 @@
       </div>
     </nav>
   -->
-    <div class="container" id="app">
-      <div class="jumbotron" style="margin-top: 50px">
-        <h1 class="display-4 title-text fw-600">QoLab</h1>
+    <style>
+      html, body, #app {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div class="container" id="app" style="display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+      <div style="padding-top: 100px; text-align: center;">
+        <img width="80%; max-width: 300px;" src="{% static 'qolab-wordmark.png' %}" alt="Main Image">
       </div>
+      {% if user.is_authenticated %}
+      <p>Welcome, {{ user.first_name }} {{user.last_name }} !</p>
+      <p>Welcome, {{ user.email }} </p>
       
+      {% else %}
+      <div style="display: flex; flex-direction: column; align-items: center; ">
+        <a href="http://127.0.0.1:8000/accounts/google/login/" type="button" class="btn btn-dark btn-primary btn-lg btn-block">Continue With Google</a>
+        <button href="http://127.0.0.1:8000/accounts/google/login/" type="button" class="btn btn-link btn-block">Continue With Facebook</button>
+
+      </div>
+      {% endif %}
       </div>
       <div style="display: block; padding: 100px"></div>
     </div>
     <!-- Must put the script below after the app div -->
-
     <script src="{% static 'main.js' %}"></script>
   </body>
 </html>
