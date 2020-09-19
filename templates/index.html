@@ -21,10 +21,11 @@
       rel="stylesheet"
     />
     <link href="{% static 'main.css' %}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <!-- Add additional CSS in static file -->
   </head>
 
-  <body style="background-color: #FCF8ED">
+  <body style="background-color: #fcf8ed">
     <!--
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -41,7 +42,9 @@
     </nav>
   -->
     <style>
-      html, body, #app {
+      html,
+      body,
+      #app {
         width: 100%;
         height: 100%;
       }
@@ -49,68 +52,160 @@
 
     {% if user.is_authenticated %}
     <div id="nav-bar">
-        <a href="#"><img style="height: 50px" src="{% static 'qolab-white.png' %}" alt="Main Image"></a>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Code" aria-label="Code">
-          <button class="btn btn-white my-2 my-sm-0" type="submit">Join</button>
-        </form>
+      <a href="#"
+        ><img
+          style="height: 50px"
+          src="{% static 'qolab-white.png' %}"
+          alt="Main Image"
+      /></a>
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Code"
+          aria-label="Code"
+        />
+        <button class="btn btn-white my-2 my-sm-0" type="submit">Join</button>
+      </form>
     </div>
     {% endif %}
-    <div class="container" id="app" style="display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+    <div
+      class="container"
+      id="app"
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+      "
+    >
       {% if not user.is_authenticated %}
-      <div style="padding-top: 100px; text-align: center;">
-        <img style="width: 80%; max-width: 500px;" src="{% static 'qolab-wordmark.png' %}" alt="Main Image">
+      <div style="padding-top: 100px; text-align: center">
+        <img
+          style="width: 80%; max-width: 500px"
+          src="{% static 'qolab-wordmark.png' %}"
+          alt="Main Image"
+        />
       </div>
-      {% endif %}
-      {% if user.is_authenticated %}
+      {% endif %} {% if user.is_authenticated %}
       <div>
         <p>Welcome, {{ user.first_name }} {{user.last_name }} !</p>
-        <p>Welcome, {{ user.email }} </p>
+        <p>Welcome, {{ user.email }}</p>
         <div class="container">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Code</label>
-              <input type="text" class="form-control" id="inputcode4" />
-              <button type="submit" class="btncls btn-success">Go</button>
-            </div>
-          </div>
-        
-          <div class="container">
-            <div class="form-row">
-              <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="email1@example, email2@example, ..." />
-            </div>
-          </div>
-        
-          <div class="container">
-            <input type="text" class="form-control" id="datepicker" style="width: 300px" />
+          <div class="from-row" style="margin-top: 100px">
+            <label for="datepicker">Date</label>
+            <input
+              type="text"
+              class="form-control"
+              id="datepicker"
+              value="09/19/2020"
+              style="width: 300px"
+            />
             <br />
-            <input type="text" class="form-control" data-provide="datepicker" style="width: 300px" />
           </div>
-          <div class="from-row">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Start</label>
+          <div class="row">
+            <div class="col">
+              <label for="inputStart4">Start</label>
               <input type="time" class="form-control" id="inputStart4" />
             </div>
-            <div class="form-group col-md-6">
-              <label for="inputPassword4">End</label>
+            <div class="col">
+              <label for="inputEnd4">End</label>
               <input type="time" class="form-control" id="inputEnd4" />
             </div>
           </div>
+
+          <div class="form-row">
+            <label for="inputEmail4">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputEmail4"
+              placeholder="email1@example, email2@example, ..."
+            />
+          </div>
+          <button
+            onclick="formSubmit()"
+            type="button"
+            class="btn btn-link btn-block"
+          >
+            Submit Form
+          </button>
         </div>
       </div>
-      
       {% else %}
-      <div style="display: flex; flex-direction: column; align-items: center; ">
-        <a href="http://127.0.0.1:8000/accounts/google/login/" type="button" class="btn btn-dark btn-primary btn-lg btn-block">Continue With Google</a>
-        <button href="http://127.0.0.1:8000/accounts/google/login/" type="button" class="btn btn-link btn-block">Continue With Facebook</button>
-
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <a
+          href="http://127.0.0.1:8000/accounts/google/login/"
+          type="button"
+          class="btn btn-dark btn-primary btn-lg btn-block"
+          >Continue With Google</a
+        >
+        <button
+          href="http://127.0.0.1:8000/accounts/google/login/"
+          type="button"
+          class="btn btn-link btn-block"
+        >
+          Continue With Facebook
+        </button>
       </div>
       {% endif %}
-      </div>
-      <div style="display: block; padding: 100px"></div>
     </div>
     <!-- Must put the script below after the app div -->
     <script src="{% static 'main.js' %}"></script>
+    <script>
+      function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(";");
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == " ") c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) == 0)
+            return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+      }
+
+      var inviteEmails = [];
+
+      function formSubmit() {
+        var csrftoken = readCookie("csrftoken");
+
+        var firstName = "{{ user.first_name }}";
+        var lastName = "{{ user.last_name }}";
+        var email = "{{ user.email }}";
+
+        var code = "092598";
+        var start = document.getElementById("inputStart4").value;
+        var end = document.getElementById("inputEnd4").value;
+
+        var date = document.getElementById("datepicker").value;
+
+        $.ajax({
+          type: "POST",
+          url: "/email",
+          headers: { "X-CSRFToken": csrftoken },
+          data: {
+            subject: "You have a new QoLab with " + firstName + "!",
+            message:
+              firstName +
+              " has invited you to a collab. You code is " +
+              code +
+              ". It starts at " +
+              start +
+              " and ends at " +
+              end +
+              " on " +
+              date +
+              ".",
+          },
+          success: function () {
+            console.log("Frick Yes");
+          },
+          error: function () {
+            alert("There was an error");
+          },
+        });
+      }
+    </script>
   </body>
 </html>
