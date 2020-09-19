@@ -9,6 +9,9 @@ def index(request):
     return render(request, 'index.html')
     # return HttpResponse("Hello World")
 
+def form(request):
+    return render(request, 'form.html')
+    # return HttpResponse("Hello World")
 
 def email(request):
     subject = "Test"

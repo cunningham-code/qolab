@@ -22,4 +22,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('email', views.email, name='email'),
     path('', views.index, name='index'),
+    path('form', views.form, name='form'),
 ]
