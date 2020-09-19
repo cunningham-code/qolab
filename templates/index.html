@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>QoLab</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+    <script
+      src="https://kit.fontawesome.com/37c4dcbe51.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato|Work+Sans:400,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="{% static 'azure.css' %}" rel="stylesheet" />
+    <link href="{% static 'main.css' %}" rel="stylesheet" />
+    <!-- Add additional CSS in static file -->
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand" href="#"
+          ><img
+            height="30px"
+            src="https://cdn.worldvectorlogo.com/logos/ernst-young-ey.svg"
+        /></a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link title-text" href="#"
+                >QoLab <span class="sr-only">(current)</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container" id="app">
+      <div class="jumbotron" style="margin-top: 50px">
+        <h1 class="display-4 title-text fw-600">QoLab</h1>
+      </div>
+
+      <home-header title="Review"></home-header>
+      <home-header title="Create"></home-header>
+      <home-header title="Julio is great!"></home-header>
+      <span v-bind:title="message">
+        Hover your mouse over me for a few seconds
+        to see my dynamically bound title!
+      </span>
+
+      <p>[[ test ]]</p>
+      
+      </div>
+      <div style="display: block; padding: 100px"></div>
+    </div>
+    <!-- Must put the script below after the app div -->
+
+    <script src="{% static 'main.js' %}"></script>
+  </body>
+</html>

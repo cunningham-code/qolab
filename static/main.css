@@ -1,0 +1,51 @@
+/*
+
+Home
+
+*/
+* {
+  font-family: "Lato", sans-serif;
+}
+
+.title-text {
+  font-family: "Work Sans", sans-serif;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.w-card {
+  margin: 15px;
+  width: 30%;
+  min-width: 200px;
+}
+
+.header {
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+.icon-container {
+  margin-right: 10px;
+  background-color: #0062ad;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.icon-container i {
+  font-size: 1rem;
+  color: #fff;
+}
+
+/*
+
+Flow Screen
+
+*/
+.main-card {
+  margin: 30px;
+  width: 90%;
+}
