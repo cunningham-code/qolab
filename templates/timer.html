@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Timer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+    <script
+      src="https://kit.fontawesome.com/37c4dcbe51.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato|Work+Sans:400,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="{% static 'main.css' %}" rel="stylesheet" />
+    <!-- Add additional CSS in static file -->
+  </head>
+
+  <body style="background-color: #fcf8ed">
+    <style>
+      html,
+      body,
+      #app {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="nav-bar" style="display: flex; justify-content: center">
+      <p style="color: #fff; margin: 10px">Did you turn on Do Not Disturb?</p>
+    </div>
+    <div style="height: calc(100% - 65px); display: flex">
+      <iframe
+        src="https://www.youtube.com/embed/DWcJFNfaw9c?autoplay=1"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen=""
+        style="flex: 1; height: 100%"
+      ></iframe>
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+        "
+      >
+        <div id="timer" class="container" height="100px">
+          <img
+            src="/static/qolab-wordmark.png"
+            alt="Main Image"
+            style="max-width: 100px"
+          />
+          <p v-if="minutesLeft === 1">
+            You have [[ minutesLeft ]] minute left of focused studying.
+          </p>
+          <p v-else>
+            You have [[ minutesLeft ]] minutes left of focused studying.
+          </p>
+        </div>
+        <div
+          style="
+            margin: 20px;
+            text-align: left;
+            padding: 30px;
+            background: #444;
+            border-radius: 5px;
+            color: #fff;
+            height: min-content;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          "
+        >
+          <h1>Studying With</h1>
+          <p>Jack Cunningham</p>
+          <p>Max Machado</p>
+
+          <p>And 2 Others...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Must put the script below after the app div -->
+    <script>
+      /*
+      x = new Vue({
+        delimiters: ["[[", "]]"],
+        el: "#app",
+        data: {
+          message: "You loaded this page on " + new Date().toLocaleString(),
+        },
+        template: "<div></div>",
+      });
+      */
+
+      y = new Vue({
+        delimiters: ["[[", "]]"],
+        el: "#timer",
+        props: {
+          //jack wants string, give string right where the date is
+          setDate: {
+            type: Date,
+            default: function () {
+              return new Date(2020, 8, 19, 21, 59);
+            },
+          },
+        },
+        data: {
+          minutes: 0,
+          curDate: new Date(),
+          minutesLeft: 0,
+          done: false,
+          miliseconds: 0,
+        },
+
+        created: function () {
+          var self = this;
+          //the time after session started
+          self.miliseconds = self.setDate.getTime() - self.curDate.getTime();
+          self.minutesLeft = Math.ceil(self.miliseconds / 60000);
+          console.log(self.miliseconds);
+
+          //turn date into nice readable format
+          setInterval(function () {
+            self.miliseconds -= 100;
+            self.minutesLeft = Math.ceil(self.miliseconds / 60000);
+            console.log(Math.ceil(self.miliseconds / 60000));
+            if (self.miliseconds <= 0) {
+              self.done = true;
+            }
+          }, 100);
+        },
+      });
+    </script>
+  </body>
+</html>

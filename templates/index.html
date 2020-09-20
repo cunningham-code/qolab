@@ -58,15 +58,33 @@
           src="{% static 'qolab-white.png' %}"
           alt="Main Image"
       /></a>
-      <form class="form-inline my-2 my-lg-0">
+      <div class="form-inline my-2 my-lg-0">
         <input
           class="form-control mr-sm-2"
-          type="text"
+          type="number"
           placeholder="Code"
           aria-label="Code"
+          id="joincode"
         />
-        <button class="btn btn-white my-2 my-sm-0" type="submit">Join</button>
-      </form>
+        <button
+          onclick="join()"
+          class="btn btn-white my-2 my-sm-0"
+          type="submit"
+        >
+          Join
+        </button>
+      </div>
+      <script>
+        setInputFilter(document.getElementById("joincode"), function (value) {
+          return (
+            /^\d*$/.test(value) && (value === "" || parseInt(value) < 1000000)
+          );
+        });
+
+        function join() {
+          window.open("/timer/" + document.getElementById("joincode").value);
+        }
+      </script>
     </div>
     {% endif %}
     <div
@@ -197,6 +215,7 @@
               " on " +
               date +
               ".",
+            emails: JSON.stringify(inviteEmails),
           },
           success: function () {
             console.log("Frick Yes");

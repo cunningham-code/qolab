@@ -4,11 +4,17 @@ from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMultiAlternatives
+from .models import Timer
 
 
 def index(request):
     return render(request, 'index.html')
     # return HttpResponse("Hello World")
+
+
+def timer(request, code="000000"):
+    t = Timer.objects.get(code=code)
+    return render(request, 'timer.html', {'code': code, 'timer': t})
 
 
 def form(request):
@@ -19,6 +25,7 @@ def form(request):
 def email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
+    to_emails = request.POST.get('emails', '')
     # request.POST.get('from_email', '')
     from_email = "qolabstudying@gmail.com"
     # subject = "Test"

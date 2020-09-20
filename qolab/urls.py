@@ -24,4 +24,5 @@ urlpatterns = [
     path('email', views.email, name='email'),
     path('', views.index, name='index'),
     path('form', views.form, name='form'),
+    path('timer/<str:code>', views.timer, name='timer'),
 ]
