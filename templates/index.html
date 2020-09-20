@@ -58,16 +58,35 @@
           src="{% static 'qolab-white.png' %}"
           alt="Main Image"
       /></a>
-      <form class="form-inline my-2 my-lg-0">
+      <div class="form-inline my-2 my-lg-0">
         <input
           class="form-control mr-sm-2"
-          type="text"
+          type="number"
           placeholder="Code"
           aria-label="Code"
+          id="joincode"
         />
-        <button class="btn btn-white my-2 my-sm-0" type="submit">Join</button>
-      </form>
+        <button
+          onclick="join()"
+          class="btn btn-white my-2 my-sm-0"
+          type="submit"
+        >
+          Join
+        </button>
+      </div>
+      <script>
+        setInputFilter(document.getElementById("joincode"), function (value) {
+          return (
+            /^\d*$/.test(value) && (value === "" || parseInt(value) < 1000000)
+          );
+        });
+
+        function join() {
+          window.open("/timer/" + document.getElementById("joincode").value);
+        }
+      </script>
     </div>
+
     {% endif %}
     <div
       class="container"
@@ -114,6 +133,47 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label for="inputYouTube">YouTube Link</label>
+            <input
+              type="text"
+              class="form-control"
+              id="inputYouTube"
+              placeholder="Put your link here..."
+            />
+          </div>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="inputName"
+              placeholder="Participant's name"
+              aria-label="Participant's name"
+              aria-describedby="button-addon2"
+            />
+            <input
+              type="email"
+              class="form-control"
+              id="inputEmail"
+              placeholder="Participant's email"
+              aria-label="Participant's email"
+              aria-describedby="button-addon2"
+            />
+            <div class="input-group-append">
+              <button
+                onclick="addUserEmail()"
+                class="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+          <p id="participants">Participants:</p>
+
+          <!-- *Replace this with something that can take  multiple emails*
           <div class="form-row">
             <label for="inputEmail4">Email</label>
             <input
@@ -122,7 +182,8 @@
               id="inputEmail4"
               placeholder="email1@example, email2@example, ..."
             />
-          </div>
+          </div> -->
+
           <button
             onclick="formSubmit()"
             type="button"
@@ -166,6 +227,7 @@
       }
 
       var inviteEmails = [];
+      var inviteUsers = [];
 
       function formSubmit() {
         var csrftoken = readCookie("csrftoken");
@@ -175,28 +237,26 @@
         var email = "{{ user.email }}";
 
         var code = "092598";
+
         var start = document.getElementById("inputStart4").value;
         var end = document.getElementById("inputEnd4").value;
 
         var date = document.getElementById("datepicker").value;
+
+        var youTubeLink = document.getElementById("inputYouTube").value;
 
         $.ajax({
           type: "POST",
           url: "/email",
           headers: { "X-CSRFToken": csrftoken },
           data: {
-            subject: "You have a new QoLab with " + firstName + "!",
-            message:
-              firstName +
-              " has invited you to a collab. You code is " +
-              code +
-              ". It starts at " +
-              start +
-              " and ends at " +
-              end +
-              " on " +
-              date +
-              ".",
+            firstName: firstName,
+            start: start,
+            end: end,
+            date: date,
+            ytLink: youTubeLink,
+            friends: JSON.stringify(inviteUsers),
+            emails: JSON.stringify(inviteEmails),
           },
           success: function () {
             console.log("Frick Yes");
@@ -205,6 +265,36 @@
             alert("There was an error");
           },
         });
+      }
+    </script>
+    <script>
+      //var x = 0;
+      //var inviteEmailsTest = Array();
+      function addUserEmail() {
+        console.log(
+          "(EMAIL,NAME)" +
+            document.getElementById("inputEmail").value +
+            " " +
+            document.getElementById("inputName").value
+        );
+        inviteEmails.push(document.getElementById("inputEmail").value);
+        inviteUsers.push(document.getElementById("inputName").value);
+
+        if (
+          document.getElementById("participants").innerHTML != "Participants:"
+        ) {
+          document.getElementById("participants").innerHTML =
+            document.getElementById("participants").innerHTML +
+            ", " +
+            document.getElementById("inputName").value;
+        } else {
+          document.getElementById("participants").innerHTML =
+            document.getElementById("participants").innerHTML +
+            " " +
+            document.getElementById("inputName").value;
+        }
+        document.getElementById("inputName").value = "";
+        document.getElementById("inputEmail").value = "";
       }
     </script>
   </body>
