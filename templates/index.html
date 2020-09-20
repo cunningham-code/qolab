@@ -108,16 +108,31 @@
       </div>
       {% endif %} {% if user.is_authenticated %}
       <div>
-        <p>Welcome, {{ user.first_name }} {{user.last_name }} !</p>
-        <p>Welcome, {{ user.email }}</p>
-        <div class="container">
+        <p style="text-align: center">
+          Welcome, {{ user.first_name }} {{user.last_name }} !
+        </p>
+        <p style="text-align: center">{{ user.email }}</p>
+        <div
+          class="container"
+          style="
+            margin: 20px;
+            text-align: left;
+
+            background: #444;
+            border-radius: 5px;
+            color: #fff;
+            height: min-content;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          "
+        >
           <div class="from-row" style="margin-top: 100px">
             <label for="datepicker">Date</label>
             <input
               type="text"
               class="form-control"
               id="datepicker"
-              value="09/19/2020"
+              value="09/20/2020"
+              20
               style="width: 300px"
             />
             <br />
@@ -204,7 +219,7 @@
         <button
           href="http://127.0.0.1:8000/accounts/google/login/"
           type="button"
-          class="btn btn-link btn-block"
+          class="btn btn-dark btn-primary btn-lg btn-block"
         >
           Continue With Facebook
         </button>
@@ -226,8 +241,11 @@
         return null;
       }
 
-      var inviteEmails = [];
-      var inviteUsers = [];
+      var inviteEmails = ["{{user.email}}"];
+      var inviteUsers = ["{{user.first_name}}"];
+      document.getElementById("participants").innerHTML =
+        document.getElementById("participants").innerHTML +
+        " {{user.first_name}}";
 
       function formSubmit() {
         var csrftoken = readCookie("csrftoken");
@@ -259,7 +277,7 @@
             emails: JSON.stringify(inviteEmails),
           },
           success: function () {
-            console.log("Frick Yes");
+            alert("Sent");
           },
           error: function () {
             alert("There was an error");
@@ -280,19 +298,11 @@
         inviteEmails.push(document.getElementById("inputEmail").value);
         inviteUsers.push(document.getElementById("inputName").value);
 
-        if (
-          document.getElementById("participants").innerHTML != "Participants:"
-        ) {
-          document.getElementById("participants").innerHTML =
-            document.getElementById("participants").innerHTML +
-            ", " +
-            document.getElementById("inputName").value;
-        } else {
-          document.getElementById("participants").innerHTML =
-            document.getElementById("participants").innerHTML +
-            " " +
-            document.getElementById("inputName").value;
-        }
+        document.getElementById("participants").innerHTML =
+          document.getElementById("participants").innerHTML +
+          ", " +
+          document.getElementById("inputName").value;
+
         document.getElementById("inputName").value = "";
         document.getElementById("inputEmail").value = "";
       }

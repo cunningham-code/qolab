@@ -8,6 +8,8 @@ from .models import Timer
 import json
 import random
 import string
+from .models import Timer
+import re
 
 
 def index(request):
@@ -16,9 +18,11 @@ def index(request):
 
 
 def timer(request, code="000000"):
-    # t = Timer.objects.get(code=code)
-    # return render(request, 'timer.html', {'code': code, 'timer': t})
-    return render(request, 'timer.html', {'code': code})
+    # try:
+    t = Timer.objects.get(code=code)
+    return render(request, 'timer.html', {'code': code, 'end': t.end, 'start': t.start, 'youtube': t.youtube, 'day': t.day, 'emails': t.emails, 'names': t.names})
+    # except:
+    #    return render(request, 'timer.html', {'code': code})
 
 
 def form(request):
@@ -36,14 +40,27 @@ def email(request):
     start = request.POST.get('start', '')
     end = request.POST.get('end', '')
     date = request.POST.get('date', '')
-    ytLink = request.POST.get('youTubeLink', '')
+    ytLink = request.POST.get('ytLink', '')
+
+    regex = re.compile(
+        r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
+
+    match = regex.match(ytLink)
+
+    ytLink = match.group('id')
+
     friends = json.loads(request.POST.get('friends', ''))  # This is not used
     emails = json.loads(request.POST.get('emails', ''))
+    print(emails)
     # make random number with 6 characters. Characters must be digits 0-9.
     code = get_random_string(6)
 
+    t = Timer(code=code, start=start, end=end, day=date,
+              names=friends, emails=emails, youtube=ytLink)
+    t.save()
+
     subject = "You have a new QoLab with " + firstName + "!"
-    message = firstName + " has invited you to a collab. You code is " + code + \
+    message = firstName + " has invited you to a QoLab. You code is " + code + \
         ". It starts at " + start + " and ends at " + end + " on " + date + "."
     message = message + "\n\nDon't miss out on studying with friends."
 
