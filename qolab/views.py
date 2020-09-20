@@ -5,6 +5,9 @@ from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMultiAlternatives
 from .models import Timer
+import json
+import random
+import string
 
 
 def index(request):
@@ -23,25 +26,38 @@ def form(request):
 
 
 def email(request):
-    subject = request.POST.get('subject', '')
-    message = request.POST.get('message', '')
-    to_emails = request.POST.get('emails', '')
-    # request.POST.get('from_email', '')
+    def get_random_string(length):
+        numbers = string.digits
+        result_str = ''.join(random.choice(numbers) for i in range(length))
+        return result_str
+
+    firstName = request.POST.get('firstName', '')
+    start = request.POST.get('start', '')
+    end = request.POST.get('end', '')
+    date = request.POST.get('date', '')
+    ytLink = request.POST.get('youTubeLink', '')
+    friends = json.loads(request.POST.get('friends', ''))  # This is not used
+    emails = json.loads(request.POST.get('emails', ''))
+    # make random number with 6 characters. Characters must be digits 0-9.
+    code = get_random_string(6)
+
+    subject = "You have a new QoLab with " + firstName + "!"
+    message = firstName + " has invited you to a collab. You code is " + code + \
+        ". It starts at " + start + " and ends at " + end + " on " + date + "."
+    message = message + "\n\nDon't miss out on studying with friends."
+
     from_email = "qolabstudying@gmail.com"
-    # subject = "Test"
-    # message = "test"
-    # from_email = "qolabstudying@gmail.com"
+
     if subject and message and from_email:
         try:
             html_content = '<p>' + message + '</p>'
-            msg = EmailMultiAlternatives(subject, message, from_email, [
-                                         'cunningjc10@gmail.com'])
+            msg = EmailMultiAlternatives(subject, message, from_email, emails)
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             # send_mail(subject, message, from_email, [])
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
-        return HttpResponse('fuck yes.')
+        return HttpResponse('frick yes.')
     else:
         # In reality we'd use a form class
         # to get proper validation errors.
